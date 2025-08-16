@@ -1,3 +1,4 @@
+import { getRandomInteger } from './utils.js';
 import { getRandomArrayElement } from './utils.js';
 
 const MESSAGES = ['Всё отлично!',
@@ -32,26 +33,27 @@ const idGenerator = () => {
   return () => ++id;
 };
 const postIdGenerator = idGenerator();
-const postId = postIdGenerator();
+const commentIdGenerator = idGenerator();
 
 const createComment = () => ({
-  id: postId,
+  id: commentIdGenerator(),
   avatar: `img/avatar-${getRandomInteger(MIN_AVATAR_NUM, MAX_AVATAR_NUM)}.svg`,
   message: getRandomArrayElement(MESSAGES),
   name: getRandomArrayElement(NAMES),
 });
 
 function createImageDescription() {
-  const postId = postIdGenerator;
+  const postId = postIdGenerator();
   return {
     id: postId,
     url: `photos/${postId}.jpg`,
-    description: 'Фото автора',
+    description: `Фото автора ${postId}`,
     likes: getRandomInteger(MIN_LIKES_NUM, MAX_LIKES_NUM),
     comments: Array.from({ length: getRandomInteger(MIN_COMMENTS_NUM, MAX_COMMENTS_NUM) }, createComment),
   };
 }
 export const getImgDescriptionArray = () => Array.from({ length: MAX_IMG_DESC_NUM }, createImageDescription);
+
 
 // eslint-disable-next-line no-console
 console.log(getImgDescriptionArray);
